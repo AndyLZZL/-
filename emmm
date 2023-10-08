@@ -1,0 +1,96 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <title>Todo List</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            height: 100vh;  
+            background-color: #f0f0f0;  
+        }  
+        .container {  
+            width: 80%;  
+            max-width: 600px;  
+            border: 1px solid #ddd;  
+            border-radius: 5px;  
+            padding: 20px;  
+            background-color: #fff;  
+        }  
+        input[type="text"] {  
+            width: 100%;  
+            padding: 12px 0;  
+            margin: 8px 0;  
+            box-sizing: border-box;  
+        }  
+        button {  
+            background-color: #4CAF50;  
+            color: white;  
+            padding: 14px 20px;  
+            margin: 8px 0;  
+            border: none;  
+            cursor: pointer;  
+            width: 100%;  
+            opacity: 0.9;  
+        }  
+        button:hover {  
+            opacity:1;  
+        }  
+        #todo-list {  
+            list-style-type: none;  
+            padding: 0;  
+        }  
+        .todo-item {  
+            padding: 15px;  
+            border-bottom: 1px solid #ddd;  
+        }  
+        .todo-item input[type="checkbox"] {  
+            margin-right: 10px;  
+        }  
+        .todo-item label {  
+            cursor: pointer;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <div class="container">  
+        <h2>Todo List</h2>  
+        <input type="text" id="newTodoInput" placeholder="New Todo...">  
+        <button id="addTodoButton">Add Todo</button>  
+        <ul id="todo-list"></ul>  
+    </div>  
+    <script>  
+        const todoInput = document.getElementById('newTodoInput');  
+        const todoList = document.getElementById('todo-list');  
+        const addTodoButton = document.getElementById('addTodoButton');  
+        let todoItems = [];  
+        let currentList = 'Default';  
+        const data = {};  
+        Object.defineProperty(data, 'Default', { value: [], enumerable: true });  
+        localStorage.setItem('todoItems', JSON.stringify(data));  
+  
+        addTodoButton.addEventListener('click', () => {  
+            if (todoInput.value) {  
+                addTodoToList(todoInput.value);  
+                todoInput.value = '';  
+            }  
+        });  
+  
+        function addTodoToList(todo) {  
+            const listDefault = data['Default'];  
+            const newTodoItem = document.createElement('li');  
+            newTodoItem.classList.add('todo-item');  
+            newTodoItem.innerHTML = `<input type="checkbox" id="${todo}"><label for="${todo}">${todo}</label>`;  
+            todoList.appendChild(newTodoItem);  
+            listDefault.push(todo);  
+            updateLocalStorage();  
+        }  
+  
+        function updateLocalStorage() {  
+            localStorage.setItem('todoItems', JSON.stringify(data));  
+        }  
+    </script>  
+</body>  
+</html>
